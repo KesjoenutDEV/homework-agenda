@@ -1,40 +1,121 @@
-async function hash(text){
-  const msgUint8 = new TextEncoder().encode(text);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b=>b.toString(16).padStart(2,"0")).join("");
+:root{
+  --accent:#5a7cff;
+  --radius:22px;
+  --radiusSmall:12px;
+  --shadow:0 15px 40px rgba(0,0,0,0.15);
+  --transition:0.25s;
+  --font:system-ui;
 }
 
-async function register(){
-  let user = document.getElementById("user").value;
-  let pass = document.getElementById("pass").value;
-  if(!user || !pass){ alert("Fill both fields"); return; }
-
-  let hashPass = await hash(pass);
-  let users = JSON.parse(localStorage.getItem("users") || "{}");
-
-  if(users[user]){ alert("User exists"); return; }
-
-  users[user] = hashPass;
-  localStorage.setItem("users", JSON.stringify(users));
-  alert("Account created");
+body.light{
+  --bg:#f3f5ff;
+  --card:#ffffff;
+  --text:#111;
+  --input:#eef1ff;
 }
 
-async function login(){
-  let user = document.getElementById("user").value;
-  let pass = document.getElementById("pass").value;
-  let users = JSON.parse(localStorage.getItem("users") || "{}");
-  let hashPass = await hash(pass);
-
-  if(users[user] === hashPass){
-    localStorage.setItem("loggedUser", user);
-    window.location = "dashboard.html";
-  }else{
-    alert("Wrong login");
-  }
+body.dark{
+  --bg:#1c1d22;
+  --card:#2a2c33;
+  --text:#f2f2f2;
+  --input:#333640;
 }
 
-function toggleTheme(){
-  document.body.classList.toggle("dark");
-  document.body.classList.toggle("light");
+body{
+  margin:0;
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  transition:background var(--transition),color var(--transition);
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 30px;
+  background:var(--card);
+  box-shadow:var(--shadow);
+}
+
+button{
+  background:var(--accent);
+  border:none;
+  padding:8px 12px;
+  border-radius:var(--radiusSmall);
+  color:white;
+  cursor:pointer;
+  margin:2px;
+}
+
+input{
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  border-radius:var(--radiusSmall);
+  border:none;
+  background:var(--input);
+  color:var(--text);
+  outline:none;
+}
+
+.login-card{
+  width:320px;
+  margin:auto;
+  margin-top:100px;
+  padding:20px;
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.container{
+  display:flex;
+  gap:20px;
+  padding:20px;
+  flex-wrap:wrap;
+}
+
+.addTask{
+  background:var(--card);
+  padding:15px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  width:300px;
+}
+
+.tasks{
+  background:var(--card);
+  padding:15px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  flex:1;
+  min-width:300px;
+}
+
+.task{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px;
+  margin-top:8px;
+  background:var(--input);
+  border-radius:var(--radiusSmall);
+  transition:all 0.2s ease;
+}
+
+.task.done{
+  text-decoration: line-through;
+  opacity:0.5;
+  transform: translateY(5px);
+}
+
+.task input[type="checkbox"]{ width:18px; height:18px; margin-right:8px; }
+.task button{ background:#ff5f5f; padding:5px 8px; font-size:12px; }
+
+@media(max-width:900px){
+  .container{ flex-direction:column; padding:10px;}
+  .addTask, .tasks{ width:100%;}
+  .login-card{ width:90%; }
 }
