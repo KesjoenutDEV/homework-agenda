@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Homework Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="light">
+
+<div class="topbar">
+  <h2 data-text="dashboardTitle">📚 Homework Planner</h2>
+  <div>
+    <button onclick="toggleTheme()" data-text="themeBtn">🌙 / ☀️</button>
+    <button onclick="exportSave()" data-text="exportBtn">Export Save</button>
+    <input type="file" id="importFile" onchange="importSave(this.files[0])">
+  </div>
+</div>
+
+<div class="container">
+  <div class="addTask">
+    <h3 data-text="addHomework">Add Homework</h3>
+    <input id="subject" placeholder="Subject" data-text="subject">
+    <input id="task" placeholder="Homework Task" data-text="task">
+    <button onclick="addTask()" data-text="addBtn">Add Task</button>
+  </div>
+
+  <div class="tasks">
+    <h3 data-text="yourTasks">Your Tasks</h3>
+    <div id="taskList"></div>
+  </div>
+</div>
+
+<script src="js/tasks.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>
