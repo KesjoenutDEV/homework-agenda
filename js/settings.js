@@ -1,45 +1,18 @@
-const translations={
-en:{addHomework:"Add Homework / Exam", yourTasks:"Your Tasks", subject:"Subject", task:"Task description", loginBtn:"Login", createBtn:"Create Account", languageLabel:"Language", dashboardTitle:"📚 Homework Planner", addBtn:"Add", themeBtn:"🌙 / ☀️"},
-nl:{addHomework:"Voeg Huiswerk / Toets Toe", yourTasks:"Jouw Taken", subject:"Vak", task:"Beschrijving", loginBtn:"Inloggen", createBtn:"Account Maken", languageLabel:"Taal", dashboardTitle:"📚 Huiswerk Planner", addBtn:"Toevoegen", themeBtn:"🌙 / ☀️"}
-};
+const translations={en:{addHomework:"Add Homework / Exam",yourTasks:"Your Tasks",subject:"Subject",task:"Task description",loginBtn:"Login",createBtn:"Create Account",languageLabel:"Language",dashboardTitle:"📚 Homework Planner",addBtn:"Add",themeBtn:"🌙 / ☀️"},nl:{addHomework:"Voeg Huiswerk / Toets Toe",yourTasks:"Jouw Taken",subject:"Vak",task:"Beschrijving",loginBtn:"Inloggen",createBtn:"Account Maken",languageLabel:"Taal",dashboardTitle:"📚 Huiswerk Planner",addBtn:"Toevoegen",themeBtn:"🌙 / ☀️"}};
 
-function setLanguage(lang){
-  localStorage.setItem("language",lang);
-  applyLanguage();
-}
+function setLanguage(lang){localStorage.setItem("language",lang);applyLanguage();}
+function applyLanguage(){const lang=localStorage.getItem("language")||"en";const t=translations[lang];document.querySelectorAll("[data-text]").forEach(el=>{const k=el.getAttribute("data-text");if(t[k]) el.innerText=t[k];if(el.tagName==="INPUT"&&t[k]) el.placeholder=t[k];});}
 
-function applyLanguage(){
-  const lang=localStorage.getItem("language")||"en";
-  const t=translations[lang];
-  document.querySelectorAll("[data-text]").forEach(el=>{
-    const key=el.getAttribute("data-text");
-    if(t[key]) el.innerText=t[key];
-    if(el.tagName==="INPUT" && t[key]) el.placeholder=t[key];
-  });
-}
-
-window.onload=function(){
-  const savedTheme=localStorage.getItem("theme")||"light";
-  document.body.classList.remove("light","dark");
-  document.body.classList.add(savedTheme);
-  applyLanguage();
-};
-
-function exportSave(){
-  let data=JSON.stringify(localStorage);
-  let blob=new Blob([data]);
-  let a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="homework-save.json";
-  a.click();
-}
-
-function importSave(file){
-  let reader=new FileReader();
-  reader.onload=()=>{
-    let data=JSON.parse(reader.result);
-    for(let key in data){ localStorage.setItem(key,data[key]); }
-    location.reload();
-  };
-  reader.readAsText(file);
-}
+function openSettings(){document.getElementById("settingsPanel").classList.toggle("hidden");}
+function loadSettings(){const s=JSON.parse(localStorage.getItem("userSettings")||"{}");if(s.theme)document.body.className=s.theme;if(s.accent)document.documentElement.style.setProperty('--accent',s.accent);if(s.bg)document.documentElement.style.setProperty('--bg',s.bg);if(s.text)document.documentElement.style.setProperty('--text',s.text);if(s.font)document.body.style.fontFamily=s.font;if(s.radius)document.documentElement.style.setProperty('--radius',s.radius+'px');if(s.shadow)document.documentElement.style.setProperty('--shadow',`0 15px ${s.shadow}px rgba(0,0,0,0.15)`);if(s.taskBehavior)window.taskBehavior=s.taskBehavior;if(s.language)setLanguage(s.language);if(document.getElementById("themeSelect"))document.getElementById("themeSelect").value=s.theme||"light";if(document.getElementById("accentColor"))document.getElementById("accentColor").value=s.accent||"#5a7cff";if(document.getElementById("bgColor"))document.getElementById("bgColor").value=s.bg||"#f3f5ff";if(document.getElementById("textColor"))document.getElementById("textColor").value=s.text||"#111";if(document.getElementById("fontSelect"))document.getElementById("fontSelect").value=s.font||"system-ui";if(document.getElementById("cardRadius"))document.getElementById("cardRadius").value=s.radius||22;if(document.getElementById("shadowStrength"))document.getElementById("shadowStrength").value=s.shadow||15;if(document.getElementById("taskBehavior"))document.getElementById("taskBehavior").value=s.taskBehavior||"fade";}
+function updateTheme(v){document.body.className=v;}
+function updateAccent(v){document.documentElement.style.setProperty('--accent',v);}
+function updateBG(v){document.documentElement.style.setProperty('--bg',v);}
+function updateTextColor(v){document.documentElement.style.setProperty('--text',v);}
+function updateFont(v){document.body.style.fontFamily=v;}
+function updateRadius(v){document.documentElement.style.setProperty('--radius',v+'px');}
+function updateShadow(v){document.documentElement.style.setProperty('--shadow',`0 15px ${v}px rgba(0,0,0,0.15)`);}
+function updateTaskBehavior(v){window.taskBehavior=v;}
+function saveSettings(){const s={theme:document.body.className,accent:document.getElementById("accentColor").value,bg:document.getElementById("bgColor").value,text:document.getElementById("textColor").value,font:document.getElementById("fontSelect").value,radius:document.getElementById("cardRadius").value,shadow:document.getElementById("shadowStrength").value,taskBehavior:document.getElementById("taskBehavior").value,language:document.getElementById("langSelect").value};localStorage.setItem("userSettings",JSON.stringify(s));alert("Settings saved!");}
+function resetSettings(){if(!confirm("Reset all settings to default?"))return;localStorage.removeItem("userSettings");location.reload();}
+window.addEventListener("load",loadSettings);
