@@ -12,6 +12,7 @@
   <h2 data-text="dashboardTitle">📚 Homework Planner</h2>
   <div>
     <button onclick="toggleTheme()" data-text="themeBtn">🌙 / ☀️</button>
+    <button onclick="openSettings()">⚙️ Settings</button>
     <button onclick="exportSave()" data-text="exportBtn">Export Save</button>
     <input type="file" id="importFile" onchange="importSave(this.files[0])">
     <button onclick="logout()">Logout</button>
@@ -34,6 +35,48 @@
     <h3 data-text="yourTasks">Your Tasks</h3>
     <div id="taskList"></div>
   </div>
+</div>
+
+<!-- Settings panel -->
+<div id="settingsPanel" class="settings-panel hidden">
+  <h3>Settings</h3>
+  <label>Theme:</label>
+  <select id="themeSelect" onchange="updateTheme(this.value)">
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="custom">Custom</option>
+  </select>
+
+  <label>Accent Color:</label>
+  <input type="color" id="accentColor" onchange="updateAccent(this.value)">
+  <label>Background Color:</label>
+  <input type="color" id="bgColor" onchange="updateBG(this.value)">
+  <label>Text Color:</label>
+  <input type="color" id="textColor" onchange="updateTextColor(this.value)">
+  <label>Font Family:</label>
+  <select id="fontSelect" onchange="updateFont(this.value)">
+    <option value="system-ui">System</option>
+    <option value="sans-serif">Sans-serif</option>
+    <option value="serif">Serif</option>
+    <option value="monospace">Monospace</option>
+  </select>
+  <label>Card Radius:</label>
+  <input type="range" min="0" max="50" id="cardRadius" oninput="updateRadius(this.value)">
+  <label>Shadow Strength:</label>
+  <input type="range" min="0" max="50" id="shadowStrength" oninput="updateShadow(this.value)">
+  <label>Task behavior on complete:</label>
+  <select id="taskBehavior" onchange="updateTaskBehavior(this.value)">
+    <option value="fade">Fade & Move down</option>
+    <option value="strikethrough">Strike-through only</option>
+    <option value="none">None</option>
+  </select>
+  <label>Language:</label>
+  <select id="langSelect" onchange="setLanguage(this.value)">
+    <option value="en">English</option>
+    <option value="nl">Nederlands</option>
+  </select>
+  <button onclick="saveSettings()">💾 Save</button>
+  <button onclick="resetSettings()">♻️ Reset Defaults</button>
 </div>
 
 <script src="js/dashboard.js"></script>
