@@ -35,4 +35,54 @@ input{width:100%;padding:8px;margin-top:5px;border-radius:var(--radiusSmall);bor
 .settings-panel label{display:block;margin-top:10px;font-weight:600;}
 .settings-panel input,.settings-panel select{width:100%;margin-top:4px;}
 
-@media(max-width:900px){.container{flex-direction:column;padding:10px;}.addTask,.tasks{width:100%;}.login-card{width:90%;}}
+.calendar-container{
+  background: var(--card);
+  padding: 15px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-top: 20px;
+}
+
+#calendar{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.calendar-day{
+  background: var(--input);
+  border-radius: var(--radiusSmall);
+  padding: 10px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-day h4{
+  margin:0 0 5px 0;
+  font-size:14px;
+  text-align:center;
+}
+
+.calendar-task{
+  background: var(--accent);
+  color: #fff;
+  padding: 2px 4px;
+  margin-top:2px;
+  border-radius: var(--radiusSmall);
+  font-size:12px;
+  cursor:pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-task.done{
+  text-decoration: line-through;
+  opacity:0.5;
+  transform: translateY(2px);
+}
+
+@media(max-width:900px){
+  .container{flex-direction:column;padding:10px;}
+  .addTask,.tasks{width:100%;}
+  .login-card{width:90%;}
+}
